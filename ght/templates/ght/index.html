@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>Lucky Cake Tray</title>
+        <link rel="stylesheet" href="https//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <script>
+        // window.onload = Play;
+        // function Play(){
+        //     document.getElementById('musicon').onclick = function(){alert($('#musicon').val())};
+        //     document.getElementById('musicoff').onclick = function(){alert($('#musicoff').val())};
+        //     document.getElementById('recordon').onclick = function(){alert($('#recordon').val())};
+        //     document.getElementById('recordoff').onclick = function(){alert($('#recordoff').val())};
+        //     document.getElementById('ledon').onclick = function(){alert($('#ledon').val())};
+        //     document.getElementById('ledoff').onclick = function(){alert($('#ledoff').val())};
+        // };
+        </script>
+    </head>
+    <body>
+
+        <form>
+        <h3> Lucky Cake Tray </h3>
+        <br>
+        <table>
+        <tr>
+            <td><a href="{% url 'index2' pk=11 %}"><button type="button" id="musicon" class="btn btn-default" value="11" >멘트시작</button></a></td>       
+            <td><a href="{% url 'index2' pk=10 %}"><button type="button" id="musicoff" class="btn btn-default" value="10">멘트종료</button></a></td>
+        </tr>
+        <tr>
+            <td><a href="{% url 'index2' pk=21 %}"><button type="button" id="recordon" class="btn btn-default" onclick="Play()" value="21">녹음시작</button></a></td>
+            <td><a href="{% url 'index2' pk=20 %}"><button type="button" id="recordoff" class="btn btn-default" onclick="Play()" value="20">녹음종료</button></a></td>
+        </tr>
+        <tr>
+            <td><a href="{% url 'index2' pk=31 %}"><button type="button" id="ledon" class="btn btn-default" onclick="Play()" value="30">조명시작</button></a></td>
+            <td><a href="{% url 'index2' pk=30 %}"><button type="button" id="ledoff" class="btn btn-default" onclick="Play()" value="31">조명종료</button></a></td>
+        </tr>
+        </table>
+        </form>
+        {% block content %}
+        {{r}}
+        {% endblock %}
+    </body>
+</html>
+
