@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import requests
 
 choicecode = (
     (11, '멘트시작','musicon'),
@@ -24,4 +25,12 @@ def index(request):
 
 def index2(request, pk):
     name = getChoicenamebyid(choicecode,pk)
-    return render(request, 'ght/index2.html',{"name":name,"pk":pk})
+    #return redirect("http://172.20.10.14/gpio/0")
+    try:
+        r = requests.get('http://172.20.10.14/gpio/%s'%str(pk))
+        #r.url
+        pk = str(r.status_code)
+        #pk += r.text
+        #return render(request, 'ght/index2.html',{"pk":pk})    
+    finally:
+        return render(request, 'ght/index.html')
