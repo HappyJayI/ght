@@ -3,5 +3,6 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^index2/(?P<pk>\d+)/$', views.index2, name='index2'),
-]
+    url(r'^gpio/(?P<pk>\d+)/$', views.led, name='led'),
+    url(r'^gpio/(?P<pk>\d+)/$', views.audio, name='audio'),
+]  
