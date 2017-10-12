@@ -4,4 +4,8 @@ __pycache__
 myenv
 /static 
 .DS_store
+<<<<<<< HEAD
 .exe
+=======
+*.exe
+>>>>>>> a4abd0acd107d98f4768b8a1f2aff2b89689be61
