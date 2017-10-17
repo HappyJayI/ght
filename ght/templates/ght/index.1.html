@@ -10,43 +10,27 @@
     </head>
     {% block content %}
     <script>
-        var argclientname = "N1";
-        window.onload = Play; 
+        window.onload = Play;
         function Play(){
-            window.history.pushState({page: 1}, "", "");
-            window.onpopstate = function(event) {
-            if(event){
-                location.href = "{% url 'index' %}"; //url초기화 작업 필요
-                //location.reload();
-            }};
-            document.getElementById('ledon').onclick = function(){getSelect();setUrl('led',11);};
-            document.getElementById('ledoff').onclick = function(){getSelect();setUrl('led',10);};
-            document.getElementById('audioon').onclick = function(){getSelect();setUrl('audio',21);};
-            document.getElementById('audiooff').onclick = function(){getSelect();setUrl('audio',20);};
+            //document.getElementById('ledon').onclick = function(){alert($('#select').val())};
+            document.getElementById('ledon').onclick = function(){location.href="'{% url 'led' pk=11%}"};
+            document.getElementById('ledoff').onclick = function(){location.href="'{% url 'led' pk=10%}"};
+            document.getElementById('audioon').onclick = function(){location.href="'{% url 'audio' pk=21%}"};
+            document.getElementById('audiooff').onclick = function(){location.href="'{% url 'audio' pk=20%}"};
+            //document.getElementById('ledon').onclick = function(){alert($('#musicon').val())};
+            //document.getElementById('musicoff').onclick = function(){alert($('#musicoff').val())};
         };
-
-        function getSelect(){
-            argclientname = $('#select').val();
-        }
-
-        function setUrl(key,pk){
-            var urll = "{% url 'led' pk=99 clientname='zz' %}";
-            urll = urll.replace("xx",key);
-            urll = urll.replace("99",pk);
-            urll = urll.replace("zz",argclientname);
-            location.href=urll
-        }
-    </script>
+        </script>
     <body>
         
         <form>
-            <div class="panel panel-danger">
+        <div class="panel panel-danger">
         <div class="panel-heading">
-                <h3 class="panel-title"><a href="{% url 'index' %}">Lucky Cake Tray</a></h3>
+                <h3 class="panel-title">Lucky Cake Tray</h3>
         </div>
         </div>
         <div class="panel-body">
-            <select id="select" class="form-control" >
+            <select id="select" class="form-control">
                 {% for clientname in clientnames %}
                 <option value={{clientname}}>{{ clientname }}</option>
                 {% endfor %}
@@ -59,22 +43,17 @@
                 <h3 class="panel-title">조명</h3>
                 </div>
                 <div class="panel-body">
-                <select id="select" class="form-control" >
-                    {% for clientname in clientnames %}
-                    <option value={{clientname}}>{{ clientname }}</option>
-                    {% endfor %}
-                </select>  
                 <button type="button" id="ledon" class="btn btn-success" value="11" onclick="Play()">시작</button>
                 <button type="button" id="ledoff" class="btn btn-warning" value="10" onclick="Play()">종료</button>
-            </div>
+                </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
                 <h3 class="panel-title">음악</h3>
                 </div>
                 <div class="panel-body">
-                <button type="button" id="audioon" class="btn btn-success" value="21" onclick="Play()">시작</button>
-                <button type="button" id="audiooff" class="btn btn-warning" value="20" onclick="Play()">종료</button>
+                <a href="{% url 'audio' pk=21 %}"><button type="button" id="musicon" class="btn btn-success" onclick="Play()" value="21">시작</button></a>
+                <a href="{% url 'audio' pk=20 %}"><button type="button" id="musicoff" class="btn btn-warning" onclick="Play()" value="20">종료</button></a>            
                 </div>
             </div>
             </div><!-- /.col-sm-4 -->

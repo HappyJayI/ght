@@ -3,57 +3,81 @@ import requests
 import subprocess
 import os
 
+#client ip 설정
+clientIP = {}
+clientIP["N1"] = "172.20.10.2"
+clientIP["N2"] = "172.20.10.15" 
+clientIP["AT"] = "172.20.10.15" 
+
+clientnames = []
+for key in clientIP.keys():
+    clientnames.append(key)
+
+#streaming 설정
 choicecode = (
     (11, '조명시작','ledon'),
     (10, '조명종료','ledoff'),
     (21, '음악시작','musicon'),
     (20, '음악종료','musicoff'), 
+    (31, '스트림시작','streamon'),
+    (30, '스트림종료','streamoff'), 
 )
 
 strpath = "./ght/templates/ght/"
 
-args = []
-args.append(strpath + "ffmpeg")
-args.append("-i")
-args.append(strpath + "1.mp3")
-args.append("-f")
-args.append("s32be")
-args.append("-acodec")
-args.append("pcm_s32be")
-args.append("-ar")
-args.append("44100")
-args.append("-af")
-args.append("volume=0.5")
-args.append("tcp://172.20.10.14:5522")
+streamargs = []
+streamargs.append(strpath + "ffmpeg")
+streamargs.append("-i")
+streamargs.append(strpath + "1.mp3")
+streamargs.append("-f")
+streamargs.append("s32be")
+streamargs.append("-acodec")
+streamargs.append("pcm_s32be")
+streamargs.append("-ar")
+streamargs.append("44100")
+streamargs.append("-af")
+streamargs.append("volume=0.5")
+streamargs.append("tcp://" + clientIP["N1"] + ":5522")
 
-def getChoicecodebyname(choicecode,name):
-    for x in choicecode:
-        if x[2] == name:
-            return x[0]
-
-def getChoicenamebyid(choicecode,id):
-    for x in choicecode:
-        if x[0] == id:
-            return x[1]
-
-def index(request):
-    return render(request, 'ght/index.html')
-
-def led(request, pk):
-    name = getChoicenamebyid(choicecode,pk)
-    #return redirect("http://172.20.10.14/gpio/0")
+def index(request, clientname=clientnames[0]):
     try:
-        r = requests.get('http://172.20.10.14/gpio/%s'%str(pk))
-        #pk = str(r.status_code)
+        return render(request, 'ght/index.html',{"clientnames":clientnames,"selectedclientname":clientname})
     finally:
-        return render(request, 'ght/index.html')
+        pass
 
-def audio(request, pk):
-    name = getChoicenamebyid(choicecode,pk)
+def led(request, pk, clientname):
+    status = ""
     try:
-        if (pk==21):
-            subprocess.Popen(args, stdout=subprocess.PIPE)
-        if (pk==20):
+        r = requests.get('http://%s/gpio/%s'%(clientIP[clientname],str(pk)))    
+    except requests.exceptions.HTTPError as err:
+        status = err
+    except requests.exceptions.RequestException as e:
+        status = "클라이언트 " + clientname + " 연결이 원활하지 않습니다. 네트워크 상태를 확인해 주세요~"
+    finally:
+        if (status != "" ):
+            return render(request, 'ght/index2.html',{"status":status})
+        else:
+            return index(request, clientname)
+
+def audio(request, pk, clientname):
+    status = ""
+    try:
+        r = requests.get('http://%s/gpio/%s'%(clientIP[clientname],str(pk)))    
+    except requests.exceptions.HTTPError as err:
+        status = err
+    except requests.exceptions.RequestException as e:
+        status = "클라이언트 " + clientname + " 연결이 원활하지 않습니다. 네트워크 상태를 확인해 주세요~"
+    finally:
+        if (status != "" ):
+            return render(request, 'ght/index2.html',{"status":status})
+        else:
+            return index(request, clientname)
+
+def audiostream(request, pk, clientname):
+    try:
+        if (pk==31):
+            subprocess.Popen(streamargs, stdout=subprocess.PIPE)
+        if (pk==30):
             #os가 windows면(nt) taskkill
             if (os.name == "nt"):
                 tasklist = subprocess.Popen('tasklist /nh /fo csv /fi "IMAGENAME eq ffmpeg.exe"', stdout=subprocess.PIPE)
