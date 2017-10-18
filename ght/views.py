@@ -5,9 +5,9 @@ import os
 
 #client ip 설정
 clientIP = {}
-clientIP["N1"] = "172.20.0.4"
-clientIP["N2"] = "172.20.0.5" 
-clientIP["AT"] = "172.20.0.6" 
+clientIP["N1"] = "172.20.0.7"
+clientIP["N2"] = "172.20.0.8" 
+clientIP["AT"] = "172.20.0.9" 
 
 clientnames = []
 for key in clientIP.keys():
