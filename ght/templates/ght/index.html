@@ -44,10 +44,8 @@
         function getledcode(){
             var code = ["Basic","Coldwave","Neocandle","Twinkle"]
             argledcode = code.indexOf(argledname) + 1
-        }        
-});
-
-
+        }
+    
         function setUrl(key,sw,code,onoff){
             var urll = "{% url 'led' pk=99 clientname='zz' %}";
             urll = urll.replace("xx",key);
