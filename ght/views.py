@@ -6,8 +6,8 @@ import os
 #client ip 설정
 clientIP = {}
 clientIP["Tray1"] = "192.168.0.5"
-clientIP["Tray2"] = "192.168.0.6" 
-clientIP["Tray3"] = "192.168.0.7" 
+#clientIP["Tray2"] = "192.168.0.6" 
+#clientIP["Tray3"] = "192.168.0.7" 
 
 clientnames = []
 for key in clientIP.keys():
