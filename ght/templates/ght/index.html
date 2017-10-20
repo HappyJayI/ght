@@ -10,29 +10,47 @@
     </head>
     {% block content %}
     <script>
-        var argclientname = "N1";
+        var argclientname = "Tray1";
+        var argledname = "Basic";
+        var argledcode = 1;
+        var argvolumename = 5;
+        var argvolumecode = 1;
+
         window.onload = Play; 
         function Play(){
             window.history.pushState({page: 1}, "", "");
             window.onpopstate = function(event) {
             if(event){
-                location.href = "{% url 'index' %}"; //url초기화 작업 필요
+                location.href = "{% url 'index' %}"; //url초기화 
                 //location.reload();
             }};
-            document.getElementById('ledon').onclick = function(){getSelect();setUrl('led',11);};
-            document.getElementById('ledoff').onclick = function(){getSelect();setUrl('led',10);};
-            document.getElementById('audioon').onclick = function(){getSelect();setUrl('audio',21);};
-            document.getElementById('audiooff').onclick = function(){getSelect();setUrl('audio',20);};
+
+            document.getElementById('ledon').onclick = function(){getSelect();getledcode();setUrl('led',1,argledcode,1);};
+            document.getElementById('ledoff').onclick = function(){getSelect();getledcode();setUrl('led',1,argledcode,0);};
+            document.getElementById('audioon').onclick = function(){getSelect();setUrl('audio',2,0,1);};
+            document.getElementById('audiooff').onclick = function(){getSelect();setUrl('audio',2,0,0);};
+            document.getElementById('audiopause').onclick = function(){getSelect();setUrl('audio',2,0,2);};
+            document.getElementById('audioprev').onclick = function(){getSelect();setUrl('audio',2,0,3);};
+            document.getElementById('audionext').onclick = function(){getSelect();setUrl('audio',2,0,4);};
+            document.getElementById('audiovplus').onclick = function(){getSelect();setUrl('audio',2,0,5);};
+            document.getElementById('audiovminus').onclick = function(){getSelect();setUrl('audio',2,0,6);};
         };
 
         function getSelect(){
             argclientname = $('#select').val();
+            argledname = $('#selectled').val();
         }
 
-        function setUrl(key,pk){
+        function getledcode(){
+            var code = ["Basic","Coldwave","Neocandle","Twinkle"]
+            argledcode = code.indexOf(argledname) + 1
+        }
+
+        function setUrl(key,sw,code,onoff){
             var urll = "{% url 'led' pk=99 clientname='zz' %}";
             urll = urll.replace("xx",key);
-            urll = urll.replace("99",pk);
+            val = sw.toString() + code.toString() + onoff.toString();
+            urll = urll.replace("99",val);
             urll = urll.replace("zz",argclientname);
             location.href=urll
         }
@@ -59,13 +77,13 @@
                 <h3 class="panel-title">조명</h3>
                 </div>
                 <div class="panel-body">
-                <select id="select" class="form-control" >
-                    {% for clientname in clientnames %}
-                    <option value={{clientname}}>{{ clientname }}</option>
+                <select id="selectled" class="form-control" >
+                    {% for ledcodename in ledcodenames %}
+                    <option value={{ledcodename}}>{{ ledcodename }}</option>
                     {% endfor %}
                 </select>  
-                <button type="button" id="ledon" class="btn btn-success" value="11" onclick="Play()">시작</button>
-                <button type="button" id="ledoff" class="btn btn-warning" value="10" onclick="Play()">종료</button>
+                <button type="button" id="ledon" class="btn btn-success" onclick="Play()">시작</button>
+                <button type="button" id="ledoff" class="btn btn-warning" onclick="Play()">종료</button>
             </div>
             </div>
             <div class="panel panel-default">
@@ -73,8 +91,13 @@
                 <h3 class="panel-title">음악</h3>
                 </div>
                 <div class="panel-body">
-                <button type="button" id="audioon" class="btn btn-success" value="21" onclick="Play()">시작</button>
-                <button type="button" id="audiooff" class="btn btn-warning" value="20" onclick="Play()">종료</button>
+                <button type="button" id="audioon" class="btn btn-success" onclick="Play()">Play</button>
+                <button type="button" id="audiooff" class="btn btn-warning" onclick="Play()">Stop</button>
+                <button type="button" id="audiopause" class="btn btn-warning" onclick="Play()">Pause</button>
+                <button type="button" id="audioprev" class="btn btn-success" onclick="Play()">Prev</button>
+                <button type="button" id="audionext" class="btn btn-success" onclick="Play()">Next</button>
+                <button type="button" id="audiovplus" class="btn btn-success" onclick="Play()">Vol(+)</button>
+                <button type="button" id="audiovminus" class="btn btn-success" onclick="Play()">Vol(-)</button>
                 </div>
             </div>
             </div><!-- /.col-sm-4 -->

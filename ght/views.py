@@ -5,13 +5,22 @@ import os
 
 #client ip 설정
 clientIP = {}
-clientIP["N1"] = "172.20.0.7"
-clientIP["N2"] = "172.20.0.8" 
-clientIP["AT"] = "172.20.0.9" 
+clientIP["Tray1"] = "192.168.0.5"
+clientIP["Tray2"] = "192.168.0.6" 
+clientIP["Tray3"] = "192.168.0.7" 
 
 clientnames = []
 for key in clientIP.keys():
     clientnames.append(key)
+
+#조명 설정
+ledcode = {}
+ledcode[1] = "Basic"
+ledcode[2] = "Coldwave"
+ledcode[3] = "Neocandle"
+ledcode[4] = "Twinkle"
+
+ledcodenames = ledcode.values()
 
 #streaming 설정
 choicecode = (
@@ -37,11 +46,12 @@ streamargs.append("-ar")
 streamargs.append("44100")
 streamargs.append("-af")
 streamargs.append("volume=0.5")
-streamargs.append("tcp://" + clientIP["N1"] + ":5522")
+streamargs.append("tcp://" + clientIP[clientnames[0]] + ":5522")
 
 def index(request, clientname=clientnames[0]):
     try:
-        return render(request, 'ght/index.html',{"clientnames":clientnames,"selectedclientname":clientname})
+        return render(request, 'ght/index.html',{"clientnames":clientnames,"selectedclientname":clientname,\
+        "ledcodenames":ledcodenames, "ledcodes":ledcode})
     finally:
         pass
 
